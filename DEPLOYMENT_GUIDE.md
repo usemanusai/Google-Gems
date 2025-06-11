@@ -4,6 +4,8 @@
 
 This guide provides comprehensive instructions for deploying the Custom Gemini Agent GUI in various environments, from individual use to enterprise deployment.
 
+> 📊 **Architecture Reference**: For detailed visual documentation of the system architecture, service layers, and database schema, see the **[Visual Architecture Guide](VISUAL_ARCHITECTURE_GUIDE.md)**.
+
 ## 📋 **Prerequisites**
 
 ### **System Requirements**
@@ -164,6 +166,125 @@ find "$BACKUP_DIR" -name "backup_*.tar.gz" -mtime +30 -delete
 2. **Knowledge Base Recovery**: Restore vector databases from backups
 3. **Template Recovery**: Import template files from backups
 
+## 🏗️ **Service Architecture Overview**
+
+Understanding the service layer architecture is crucial for proper deployment and customization:
+
+```mermaid
+graph TB
+    subgraph "Presentation Layer (PyQt6 Widgets)"
+        MW[Main Window]
+        IW[Instructions Widget]
+        KW[Knowledge Widget]
+        CW[Chat Widget]
+        SW[Settings Widget]
+        CMW[Config Manager Widget]
+    end
+
+    subgraph "Controller Layer"
+        MC[Main Controller]
+    end
+
+    subgraph "Service Layer"
+        subgraph "Core Services"
+            CS[Config Service]
+            AS[API Service]
+            RS[RAG Service]
+        end
+
+        subgraph "Epic 3 Services"
+            MS[Monitoring Service]
+        end
+
+        subgraph "Epic 4 Services"
+            GDS[Google Drive Service]
+            WSS[Web Scraping Service]
+            BPS[Batch Processing Service]
+        end
+
+        subgraph "Epic 5 Services"
+            TS[Template Service]
+            WS[Workspace Service]
+            IES[Import/Export Service]
+            SS[Session Service]
+        end
+    end
+
+    subgraph "Data Layer"
+        subgraph "Configuration Storage"
+            CONFIG_FILES[(Config Files)]
+            WORKSPACE_FILES[(Workspace Files)]
+            TEMPLATE_FILES[(Template Files)]
+            SESSION_FILES[(Session Files)]
+        end
+
+        subgraph "Knowledge Storage"
+            CHROMA_DB[(ChromaDB)]
+            VECTOR_INDEX[(Vector Index)]
+            METADATA_STORE[(Metadata)]
+        end
+
+        subgraph "External APIs"
+            GEMINI_API[Google Gemini API]
+            GDRIVE_API[Google Drive API]
+            GITHUB_API[GitHub API]
+        end
+    end
+
+    %% Widget to Controller connections
+    MW --> MC
+    IW --> MC
+    KW --> MC
+    CW --> MC
+    SW --> MC
+    CMW --> MC
+
+    %% Controller to Service connections
+    MC --> CS
+    MC --> AS
+    MC --> RS
+    MC --> MS
+    MC --> GDS
+    MC --> WSS
+    MC --> BPS
+    MC --> TS
+    MC --> WS
+    MC --> IES
+    MC --> SS
+
+    %% Service to Data Layer connections
+    CS --> CONFIG_FILES
+    WS --> WORKSPACE_FILES
+    TS --> TEMPLATE_FILES
+    SS --> SESSION_FILES
+
+    RS --> CHROMA_DB
+    RS --> VECTOR_INDEX
+    RS --> METADATA_STORE
+
+    AS --> GEMINI_API
+    GDS --> GDRIVE_API
+    WSS --> GITHUB_API
+
+    classDef widgets fill:#e3f2fd
+    classDef controller fill:#f3e5f5
+    classDef coreServices fill:#e8f5e8
+    classDef epic3Services fill:#fff3e0
+    classDef epic4Services fill:#fce4ec
+    classDef epic5Services fill:#f1f8e9
+    classDef storage fill:#f5f5f5
+    classDef apis fill:#ffebee
+
+    class MW,IW,KW,CW,SW,CMW widgets
+    class MC controller
+    class CS,AS,RS coreServices
+    class MS epic3Services
+    class GDS,WSS,BPS epic4Services
+    class TS,WS,IES,SS epic5Services
+    class CONFIG_FILES,WORKSPACE_FILES,TEMPLATE_FILES,SESSION_FILES,CHROMA_DB,VECTOR_INDEX,METADATA_STORE storage
+    class GEMINI_API,GDRIVE_API,GITHUB_API apis
+```
+
 ## 🔧 **Advanced Configuration**
 
 ### **Performance Optimization**
@@ -185,6 +306,153 @@ CHROMA_SETTINGS = {
     "persist_directory": "./chroma_db"
 }
 ```
+
+### **Database Schema Understanding**
+
+The application uses ChromaDB for vector storage with a sophisticated schema designed for enterprise scalability:
+
+```mermaid
+erDiagram
+    COLLECTIONS {
+        string collection_id PK
+        string name
+        json metadata
+        datetime created_at
+        datetime updated_at
+        int document_count
+        string embedding_model
+    }
+
+    DOCUMENTS {
+        string document_id PK
+        string collection_id FK
+        string source_path
+        string source_type
+        string filename
+        string content_hash
+        text original_content
+        json metadata
+        datetime created_at
+        datetime updated_at
+        int chunk_count
+    }
+
+    CHUNKS {
+        string chunk_id PK
+        string document_id FK
+        string collection_id FK
+        text content
+        vector embedding
+        int chunk_index
+        int start_position
+        int end_position
+        json metadata
+        datetime created_at
+        float relevance_score
+    }
+
+    EMBEDDINGS {
+        string embedding_id PK
+        string chunk_id FK
+        vector embedding_vector
+        string model_name
+        int vector_dimension
+        datetime created_at
+        json model_metadata
+    }
+
+    KNOWLEDGE_SOURCES {
+        string source_id PK
+        string collection_id FK
+        string source_type
+        string source_path
+        string source_name
+        json source_config
+        string status
+        datetime last_processed
+        datetime created_at
+        datetime updated_at
+        int document_count
+        boolean monitoring_enabled
+    }
+
+    CONFIGURATIONS {
+        string config_id PK
+        string name
+        text instructions
+        string description
+        string category
+        json tags
+        json knowledge_sources
+        json settings
+        datetime created_at
+        datetime modified_at
+        datetime last_used_at
+        int usage_count
+        int total_messages
+        string template_id
+        boolean is_shared
+    }
+
+    WORKSPACES {
+        string workspace_id PK
+        string name
+        string description
+        string workspace_type
+        json configurations
+        json settings
+        datetime created_at
+        datetime modified_at
+        string created_by
+        boolean is_shared
+        json permissions
+        string color
+        string icon
+    }
+
+    TEMPLATES {
+        string template_id PK
+        string name
+        string description
+        string category
+        text instructions
+        json default_knowledge_sources
+        json settings
+        json tags
+        datetime created_at
+        string created_by
+        string version
+        boolean is_builtin
+    }
+
+    SESSIONS {
+        string session_id PK
+        string current_workspace_id FK
+        string current_configuration_id FK
+        json window_geometry
+        json panel_states
+        json recent_configurations
+        json chat_history
+        datetime created_at
+        datetime last_active_at
+    }
+
+    COLLECTIONS ||--o{ DOCUMENTS : contains
+    DOCUMENTS ||--o{ CHUNKS : split_into
+    CHUNKS ||--|| EMBEDDINGS : has
+    COLLECTIONS ||--o{ KNOWLEDGE_SOURCES : sources
+    WORKSPACES ||--o{ CONFIGURATIONS : contains
+    TEMPLATES ||--o{ CONFIGURATIONS : creates
+    SESSIONS }o--|| WORKSPACES : current
+    SESSIONS }o--|| CONFIGURATIONS : current
+```
+
+**Key Schema Features:**
+- **Hierarchical Structure**: Collections → Documents → Chunks → Embeddings
+- **Metadata Rich**: Comprehensive metadata for all entities
+- **Relationship Tracking**: Foreign keys maintain data integrity
+- **Performance Optimized**: Indexes on frequently queried fields
+- **Audit Trail**: Creation and modification timestamps throughout
 
 ### **Integration Configuration**
 
