@@ -2,16 +2,16 @@
 PyQt6==6.6.1
 
 # AI and ML Libraries
-sentence-transformers==2.2.2
-google-generativeai==0.8.3
+sentence-transformers>=2.2.0
+google-generativeai>=0.8.0
 
 # Vector Database
-chromadb==0.4.22
+chromadb>=0.4.0
 
 # Document Processing and RAG
-langchain==0.1.0
-langchain-community==0.0.10
-langchain-core==0.1.10
+langchain>=0.1.0
+langchain-community>=0.0.10
+langchain-core>=0.1.0
 
 # File System Monitoring
 watchdog==4.0.0
@@ -20,9 +20,9 @@ watchdog==4.0.0
 GitPython==3.1.40
 
 # Google Drive API
-google-api-python-client==2.111.0
-google-auth-httplib2==0.2.0
-google-auth-oauthlib==1.2.0
+google-api-python-client>=2.100.0
+google-auth-httplib2>=0.2.0
+google-auth-oauthlib>=1.2.0
 
 # Document Loaders
 PyPDF2==3.0.1
@@ -38,8 +38,8 @@ beautifulsoup4==4.12.2
 trafilatura==1.6.4
 
 # Configuration Management
-pydantic==2.5.2
-pydantic-settings==2.1.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
 
 # Logging
 loguru==0.7.2
@@ -58,4 +58,4 @@ flake8==6.1.0
 mypy==1.8.0
 
 # Packaging
-PyInstaller==6.3.0
+PyInstaller==6.14.1
