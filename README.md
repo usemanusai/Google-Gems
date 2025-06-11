@@ -60,6 +60,13 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Alternative installation options
+# pip install -r requirements-flexible.txt  # For version conflicts
+# pip install -r requirements-minimal.txt   # For basic functionality
+
+# Verify installation
+python verify_installation.py
 ```
 
 ### **2. API Setup**
