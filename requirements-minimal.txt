@@ -1,0 +1,35 @@
+# Custom Gemini Agent GUI - Minimal Requirements
+# Essential packages only for basic functionality
+
+# Core GUI Framework
+PyQt6
+
+# AI and ML Libraries
+sentence-transformers
+google-generativeai
+
+# Vector Database
+chromadb
+
+# Document Processing
+PyPDF2
+python-docx
+
+# HTTP Requests
+requests
+beautifulsoup4
+
+# Configuration Management
+pydantic
+
+# Logging
+loguru
+
+# File System Monitoring
+watchdog
+
+# Git Integration
+GitPython
+
+# Secure Storage
+keyring

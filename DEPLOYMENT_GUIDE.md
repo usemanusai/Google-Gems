@@ -43,12 +43,37 @@ source venv/bin/activate
 ```
 
 #### **1.3 Install Dependencies**
-```bash
-# Install all required packages
-pip install -r requirements.txt
 
-# Verify installation
+We provide multiple requirements files for different installation scenarios:
+
+**Standard Installation (Recommended)**
+```bash
+pip install -r requirements.txt
+```
+
+**Flexible Installation (If version conflicts occur)**
+```bash
+pip install -r requirements-flexible.txt
+```
+
+**Minimal Installation (Basic functionality only)**
+```bash
+pip install -r requirements-minimal.txt
+```
+
+**Manual Installation (If requirements files fail)**
+```bash
+# Core dependencies only
+pip install PyQt6 google-generativeai chromadb sentence-transformers
+pip install PyPDF2 python-docx requests beautifulsoup4 pydantic loguru
+pip install watchdog GitPython keyring
+```
+
+**Verify Installation**
+```bash
 python -c "import PyQt6; print('PyQt6 installed successfully')"
+python -c "import google.generativeai; print('Gemini API installed successfully')"
+python -c "import chromadb; print('ChromaDB installed successfully')"
 ```
 
 ### **Step 2: API Configuration**
@@ -524,6 +549,88 @@ services:
       - GOOGLE_GEMINI_API_KEY=${GOOGLE_GEMINI_API_KEY}
     network_mode: host
 ```
+
+## 🛠️ **Troubleshooting**
+
+### **Common Installation Issues**
+
+#### **PyInstaller Version Error**
+```bash
+# Error: Could not find a version that satisfies the requirement PyInstaller==6.3.0
+# Solution: Use a valid PyInstaller version
+pip install PyInstaller==6.14.1
+# Or use the flexible requirements file
+pip install -r requirements-flexible.txt
+```
+
+#### **PyQt6 Installation Issues**
+```bash
+# On Ubuntu/Debian
+sudo apt-get install python3-pyqt6 python3-pyqt6-dev
+
+# On macOS with Homebrew
+brew install pyqt6
+
+# On Windows, try upgrading pip first
+python -m pip install --upgrade pip
+pip install PyQt6
+```
+
+#### **ChromaDB Installation Issues**
+```bash
+# If ChromaDB fails to install, try:
+pip install --upgrade pip setuptools wheel
+pip install chromadb --no-cache-dir
+
+# For Apple Silicon Macs:
+pip install chromadb --no-deps
+pip install onnxruntime
+```
+
+#### **Google API Dependencies**
+```bash
+# If Google API packages fail:
+pip install google-api-python-client google-auth google-auth-oauthlib
+```
+
+### **Runtime Issues**
+
+#### **API Key Configuration**
+- **Issue**: "Invalid API key" errors
+- **Solution**:
+  1. Verify API key in Google Cloud Console
+  2. Ensure Gemini API is enabled
+  3. Check API key permissions and quotas
+
+#### **Memory Issues**
+- **Issue**: Application crashes with large knowledge bases
+- **Solution**:
+  1. Reduce chunk size in configuration
+  2. Process files in smaller batches
+  3. Increase system memory or use swap
+
+#### **File Permission Issues**
+- **Issue**: Cannot save configurations or access knowledge sources
+- **Solution**:
+  1. Check file/folder permissions
+  2. Run with appropriate user privileges
+  3. Verify disk space availability
+
+### **Performance Issues**
+
+#### **Slow Knowledge Processing**
+- **Issue**: Document processing takes too long
+- **Solutions**:
+  1. Use batch processing for multiple files
+  2. Reduce chunk overlap settings
+  3. Filter out unnecessary file types
+
+#### **UI Responsiveness**
+- **Issue**: Interface becomes unresponsive
+- **Solutions**:
+  1. Enable background processing
+  2. Reduce concurrent operations
+  3. Check system resource usage
 
 ## 🔍 **Monitoring & Maintenance**
 
