@@ -89,6 +89,7 @@ pip install -r requirements.txt
 |----------|-------------|
 | **[User Manual](USER_MANUAL.md)** | Complete user guide with tutorials |
 | **[Deployment Guide](DEPLOYMENT_GUIDE.md)** | Installation and enterprise deployment |
+| **[Visual Architecture Guide](VISUAL_ARCHITECTURE_GUIDE.md)** | Comprehensive visual documentation with diagrams |
 | **[Project Summary](PROJECT_FINAL_SUMMARY.md)** | Complete project overview and achievements |
 | **[Epic Summaries](/)** | Detailed implementation summaries for each epic |
 | **[Changelog](CHANGELOG.md)** | Version history and feature additions |
@@ -115,26 +116,229 @@ pip install -r requirements.txt
 
 ## 🏗️ **Architecture Overview**
 
+The Custom Gemini Agent GUI is built with a sophisticated multi-layered architecture spanning 5 major epics, each contributing essential capabilities to create a comprehensive AI assistant platform.
+
+```mermaid
+graph TB
+    subgraph "Epic 1: Core Infrastructure"
+        UI[PyQt6 UI Framework]
+        API[Google Gemini API]
+        CONFIG[Configuration Management]
+        LOG[Logging System]
+    end
+
+    subgraph "Epic 2: Enhanced UI/UX"
+        MAIN[Main Window]
+        INST[Instructions Widget]
+        KNOW[Knowledge Widget]
+        CHAT[Chat Widget]
+        SET[Settings Widget]
+    end
+
+    subgraph "Epic 3: Persistent RAG"
+        CHROMA[ChromaDB Vector Store]
+        EMBED[Text Embedding]
+        CHUNK[Document Chunking]
+        SEARCH[Semantic Search]
+        MONITOR[File Monitoring]
+    end
+
+    subgraph "Epic 4: Advanced Ingestion"
+        LOCAL[Local Files/Folders]
+        GITHUB[GitHub Integration]
+        GDRIVE[Google Drive API]
+        WEB[Web Scraping]
+        BATCH[Batch Processing]
+    end
+
+    subgraph "Epic 5: Configuration Management"
+        WORKSPACE[Multi-Workspace]
+        TEMPLATE[Template System]
+        IMPORT[Import/Export]
+        SESSION[Session Management]
+        MANAGER[Config Manager UI]
+    end
+
+    subgraph "Core Services Layer"
+        CONTROLLER[Main Controller]
+        RAGSERV[RAG Service]
+        APISERVICE[API Service]
+        CONFIGSERV[Config Service]
+        WORKSERV[Workspace Service]
+        TEMPSERV[Template Service]
+        SESSSERV[Session Service]
+        IMPEXPSERV[Import/Export Service]
+    end
+
+    %% Epic 1 Connections
+    UI --> MAIN
+    API --> APISERVICE
+    CONFIG --> CONFIGSERV
+
+    %% Epic 2 Connections
+    MAIN --> INST
+    MAIN --> KNOW
+    MAIN --> CHAT
+    MAIN --> SET
+
+    %% Epic 3 Connections
+    RAGSERV --> CHROMA
+    RAGSERV --> EMBED
+    RAGSERV --> CHUNK
+    RAGSERV --> SEARCH
+    MONITOR --> RAGSERV
+
+    %% Epic 4 Connections
+    LOCAL --> RAGSERV
+    GITHUB --> RAGSERV
+    GDRIVE --> RAGSERV
+    WEB --> RAGSERV
+    BATCH --> RAGSERV
+
+    %% Epic 5 Connections
+    WORKSPACE --> WORKSERV
+    TEMPLATE --> TEMPSERV
+    IMPORT --> IMPEXPSERV
+    SESSION --> SESSSERV
+    MANAGER --> WORKSERV
+
+    %% Service Layer Connections
+    CONTROLLER --> RAGSERV
+    CONTROLLER --> APISERVICE
+    CONTROLLER --> CONFIGSERV
+    CONTROLLER --> WORKSERV
+    CONTROLLER --> TEMPSERV
+    CONTROLLER --> SESSSERV
+    CONTROLLER --> IMPEXPSERV
+
+    %% UI to Controller
+    MAIN --> CONTROLLER
+    INST --> CONTROLLER
+    KNOW --> CONTROLLER
+    CHAT --> CONTROLLER
+    SET --> CONTROLLER
+    MANAGER --> CONTROLLER
+
+    %% Data Flow
+    CHROMA --> APISERVICE
+    APISERVICE --> CHAT
+
+    classDef epic1 fill:#e1f5fe
+    classDef epic2 fill:#f3e5f5
+    classDef epic3 fill:#e8f5e8
+    classDef epic4 fill:#fff3e0
+    classDef epic5 fill:#fce4ec
+    classDef services fill:#f5f5f5
+
+    class UI,API,CONFIG,LOG epic1
+    class MAIN,INST,KNOW,CHAT,SET epic2
+    class CHROMA,EMBED,CHUNK,SEARCH,MONITOR epic3
+    class LOCAL,GITHUB,GDRIVE,WEB,BATCH epic4
+    class WORKSPACE,TEMPLATE,IMPORT,SESSION,MANAGER epic5
+    class CONTROLLER,RAGSERV,APISERVICE,CONFIGSERV,WORKSERV,TEMPSERV,SESSSERV,IMPEXPSERV services
 ```
-Custom Gemini Agent GUI/
-├── 🎮 Controllers/          # Application logic and orchestration
-├── ⚙️ Services/             # Business logic and integrations
-│   ├── 🤖 API Service       # Google Gemini integration
-│   ├── 🧠 RAG Service       # Knowledge management and vector DB
-│   ├── 📁 Workspace Service # Multi-workspace management
-│   ├── 📋 Template Service  # Template management
-│   ├── 📤 Import/Export     # Data portability
-│   └── 💾 Session Service   # State persistence
-├── 📊 Models/               # Data structures and validation
-├── 🖼️ Widgets/              # UI components and interactions
-└── 🔄 Workers/              # Background processing
-```
+
+### **Epic-Based Architecture**
+Each epic contributes essential capabilities:
+- **Epic 1**: Foundation with secure API integration and configuration management
+- **Epic 2**: Professional UI/UX with intuitive three-panel design
+- **Epic 3**: Advanced RAG system with persistent vector storage and semantic search
+- **Epic 4**: Comprehensive knowledge ingestion from multiple sources
+- **Epic 5**: Enterprise-grade configuration and session management
 
 ## 🔧 **Advanced Features**
 
 ### **Knowledge Source Integration**
+
+The application features a sophisticated RAG (Retrieval-Augmented Generation) pipeline that processes diverse knowledge sources and provides contextually relevant AI responses:
+
+```mermaid
+flowchart TD
+    subgraph "Knowledge Sources"
+        FILES[📄 Local Files]
+        FOLDERS[📁 Folders]
+        GITHUB[🐙 GitHub Repos]
+        GDRIVE[☁️ Google Drive]
+        WEB[🌐 Web Content]
+    end
+
+    subgraph "Document Processing Pipeline"
+        DETECT[🔍 Format Detection]
+        EXTRACT[📝 Text Extraction]
+        CLEAN[🧹 Text Cleaning]
+        CHUNK[✂️ Text Chunking]
+        EMBED[🧠 Generate Embeddings]
+    end
+
+    subgraph "Vector Storage"
+        CHROMA[(🗄️ ChromaDB)]
+        METADATA[📊 Metadata Store]
+        INDEX[🔗 Vector Index]
+    end
+
+    subgraph "Query Processing"
+        USER_Q[❓ User Question]
+        Q_EMBED[🧠 Query Embedding]
+        SEARCH[🔍 Semantic Search]
+        RETRIEVE[📋 Retrieve Context]
+        RANK[📈 Relevance Ranking]
+    end
+
+    subgraph "AI Response Generation"
+        CONTEXT[📄 Context Assembly]
+        PROMPT[💭 Prompt Construction]
+        GEMINI[🤖 Google Gemini API]
+        RESPONSE[💬 AI Response]
+        CITATIONS[📚 Source Citations]
+    end
+
+    %% Document Ingestion Flow
+    FILES --> DETECT
+    FOLDERS --> DETECT
+    GITHUB --> DETECT
+    GDRIVE --> DETECT
+    WEB --> DETECT
+
+    DETECT --> EXTRACT
+    EXTRACT --> CLEAN
+    CLEAN --> CHUNK
+    CHUNK --> EMBED
+
+    %% Storage Flow
+    EMBED --> CHROMA
+    CHUNK --> METADATA
+    EMBED --> INDEX
+
+    %% Query Flow
+    USER_Q --> Q_EMBED
+    Q_EMBED --> SEARCH
+    SEARCH --> CHROMA
+    CHROMA --> RETRIEVE
+    RETRIEVE --> RANK
+
+    %% Response Generation Flow
+    RANK --> CONTEXT
+    USER_Q --> PROMPT
+    CONTEXT --> PROMPT
+    PROMPT --> GEMINI
+    GEMINI --> RESPONSE
+    CONTEXT --> CITATIONS
+
+    classDef sources fill:#e3f2fd
+    classDef processing fill:#f1f8e9
+    classDef storage fill:#fff3e0
+    classDef query fill:#fce4ec
+    classDef ai fill:#f3e5f5
+
+    class FILES,FOLDERS,GITHUB,GDRIVE,WEB sources
+    class DETECT,EXTRACT,CLEAN,CHUNK,EMBED processing
+    class CHROMA,METADATA,INDEX storage
+    class USER_Q,Q_EMBED,SEARCH,RETRIEVE,RANK query
+    class CONTEXT,PROMPT,GEMINI,RESPONSE,CITATIONS ai
+```
+
+**Supported Source Types:**
 ```python
-# Supported source types
 ✅ Local Files & Folders      # PDF, DOCX, TXT, MD, code files
 ✅ GitHub Repositories        # Public and private repos with OAuth
 ✅ Google Drive Folders       # Documents, sheets, presentations

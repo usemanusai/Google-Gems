@@ -4,6 +4,8 @@
 
 Welcome to the Custom Gemini Agent GUI - your comprehensive platform for creating, managing, and deploying custom AI assistants with advanced knowledge management capabilities.
 
+> 📊 **Visual Guide**: For comprehensive visual documentation including architecture diagrams, workflows, and data structures, see the **[Visual Architecture Guide](VISUAL_ARCHITECTURE_GUIDE.md)**.
+
 ## 🚀 **Getting Started**
 
 ### **First Launch**
@@ -38,6 +40,64 @@ The application features a three-panel design:
 - **Settings**: API configuration and application preferences
 
 ## 🧠 **Creating Your AI Assistant**
+
+The Custom Gemini Agent GUI provides multiple pathways for creating sophisticated AI assistants. Follow this comprehensive workflow to build your perfect AI companion:
+
+```mermaid
+flowchart TD
+    START([👤 User Starts]) --> CHOICE{Choose Creation Method}
+
+    CHOICE -->|Template| TEMPLATE[📋 Select Template]
+    CHOICE -->|Custom| CUSTOM[✏️ Create Custom]
+
+    TEMPLATE --> TEMPLATE_LIST[📚 Browse Templates]
+    TEMPLATE_LIST --> SELECT_TEMPLATE[✅ Select Template]
+    SELECT_TEMPLATE --> NAME_CONFIG[📝 Name Configuration]
+
+    CUSTOM --> WRITE_INSTRUCTIONS[✍️ Write Instructions]
+
+    NAME_CONFIG --> CUSTOMIZE_INSTRUCTIONS[🔧 Customize Instructions]
+    WRITE_INSTRUCTIONS --> CUSTOMIZE_INSTRUCTIONS
+
+    CUSTOMIZE_INSTRUCTIONS --> ADD_KNOWLEDGE{Add Knowledge Sources?}
+
+    ADD_KNOWLEDGE -->|Yes| KNOWLEDGE_TYPE{Select Source Type}
+    ADD_KNOWLEDGE -->|No| SAVE_CONFIG[💾 Save Configuration]
+
+    KNOWLEDGE_TYPE -->|Files| ADD_FILES[📄 Add Local Files]
+    KNOWLEDGE_TYPE -->|Folders| ADD_FOLDERS[📁 Add Folders]
+    KNOWLEDGE_TYPE -->|GitHub| ADD_GITHUB[🐙 Add GitHub Repo]
+    KNOWLEDGE_TYPE -->|Google Drive| ADD_GDRIVE[☁️ Add Google Drive]
+    KNOWLEDGE_TYPE -->|Web| ADD_WEB[🌐 Add Web Content]
+
+    ADD_FILES --> PROCESS_SOURCES[⚙️ Process Sources]
+    ADD_FOLDERS --> PROCESS_SOURCES
+    ADD_GITHUB --> PROCESS_SOURCES
+    ADD_GDRIVE --> PROCESS_SOURCES
+    ADD_WEB --> PROCESS_SOURCES
+
+    PROCESS_SOURCES --> MORE_SOURCES{Add More Sources?}
+    MORE_SOURCES -->|Yes| KNOWLEDGE_TYPE
+    MORE_SOURCES -->|No| SAVE_CONFIG
+
+    SAVE_CONFIG --> SELECT_WORKSPACE[🏢 Select Workspace]
+    SELECT_WORKSPACE --> TEST_AGENT[🧪 Test Agent]
+    TEST_AGENT --> REFINE{Need Refinement?}
+
+    REFINE -->|Yes| CUSTOMIZE_INSTRUCTIONS
+    REFINE -->|No| COMPLETE([✅ Agent Ready])
+
+    classDef start fill:#e8f5e8
+    classDef process fill:#e3f2fd
+    classDef decision fill:#fff3e0
+    classDef action fill:#f3e5f5
+    classDef complete fill:#e1f5fe
+
+    class START,COMPLETE start
+    class TEMPLATE_LIST,SELECT_TEMPLATE,NAME_CONFIG,WRITE_INSTRUCTIONS,CUSTOMIZE_INSTRUCTIONS,ADD_FILES,ADD_FOLDERS,ADD_GITHUB,ADD_GDRIVE,ADD_WEB,PROCESS_SOURCES,SAVE_CONFIG,SELECT_WORKSPACE,TEST_AGENT process
+    class CHOICE,ADD_KNOWLEDGE,KNOWLEDGE_TYPE,MORE_SOURCES,REFINE decision
+    class TEMPLATE,CUSTOM action
+```
 
 ### **Step 1: Define Instructions**
 1. **Open Instructions Panel**: Left panel of the main window
@@ -77,6 +137,94 @@ Always ask clarifying questions when requirements are unclear.
 
 ## 📁 **Knowledge Source Management**
 
+The application supports comprehensive knowledge ingestion from multiple sources with intelligent processing and batch capabilities:
+
+```mermaid
+flowchart TD
+    START([📚 Add Knowledge]) --> SOURCE_TYPE{Select Source Type}
+
+    SOURCE_TYPE -->|Local Files| LOCAL_FILES[📄 Select Files]
+    SOURCE_TYPE -->|Folders| LOCAL_FOLDERS[📁 Select Folder]
+    SOURCE_TYPE -->|GitHub| GITHUB_REPO[🐙 Enter GitHub URL]
+    SOURCE_TYPE -->|Google Drive| GDRIVE_AUTH{Authenticated?}
+    SOURCE_TYPE -->|Web Content| WEB_CONFIG[🌐 Configure Web Source]
+
+    LOCAL_FILES --> VALIDATE_FILES[✅ Validate Files]
+    LOCAL_FOLDERS --> MONITOR_OPTION{Enable Monitoring?}
+
+    MONITOR_OPTION -->|Yes| ENABLE_MONITOR[👁️ Enable File Monitoring]
+    MONITOR_OPTION -->|No| VALIDATE_FOLDER[✅ Validate Folder]
+    ENABLE_MONITOR --> VALIDATE_FOLDER
+
+    GITHUB_REPO --> GITHUB_AUTH{Private Repo?}
+    GITHUB_AUTH -->|Yes| GITHUB_TOKEN[🔑 Enter GitHub Token]
+    GITHUB_AUTH -->|No| CLONE_REPO[📥 Clone Repository]
+    GITHUB_TOKEN --> CLONE_REPO
+
+    GDRIVE_AUTH -->|No| GDRIVE_SETUP[🔧 Setup Google Drive]
+    GDRIVE_AUTH -->|Yes| GDRIVE_FOLDER[📁 Select Drive Folder]
+    GDRIVE_SETUP --> GDRIVE_CREDS[📋 Upload Credentials]
+    GDRIVE_CREDS --> OAUTH_FLOW[🔐 OAuth Authentication]
+    OAUTH_FLOW --> GDRIVE_FOLDER
+
+    WEB_CONFIG --> WEB_MODE{Select Mode}
+    WEB_MODE -->|Single Page| SINGLE_URL[🔗 Enter URL]
+    WEB_MODE -->|Crawl Website| CRAWL_CONFIG[🕷️ Configure Crawling]
+    WEB_MODE -->|From Sitemap| SITEMAP_URL[🗺️ Enter Sitemap URL]
+
+    CRAWL_CONFIG --> MAX_PAGES[📊 Set Max Pages]
+    MAX_PAGES --> DOMAIN_RESTRICT[🔒 Domain Restrictions]
+    DOMAIN_RESTRICT --> START_CRAWL[🚀 Start Crawling]
+
+    VALIDATE_FILES --> BATCH_OPTION{Batch Process?}
+    VALIDATE_FOLDER --> BATCH_OPTION
+    CLONE_REPO --> BATCH_OPTION
+    GDRIVE_FOLDER --> BATCH_OPTION
+    SINGLE_URL --> BATCH_OPTION
+    START_CRAWL --> BATCH_OPTION
+    SITEMAP_URL --> BATCH_OPTION
+
+    BATCH_OPTION -->|Yes| BATCH_QUEUE[📋 Add to Batch Queue]
+    BATCH_OPTION -->|No| PROCESS_INDIVIDUAL[⚙️ Process Individual]
+
+    BATCH_QUEUE --> MORE_SOURCES{Add More Sources?}
+    MORE_SOURCES -->|Yes| SOURCE_TYPE
+    MORE_SOURCES -->|No| START_BATCH[🚀 Start Batch Processing]
+
+    START_BATCH --> BATCH_PROGRESS[📊 Monitor Progress]
+    PROCESS_INDIVIDUAL --> INDIVIDUAL_PROGRESS[📊 Monitor Progress]
+
+    BATCH_PROGRESS --> BATCH_COMPLETE{All Complete?}
+    INDIVIDUAL_PROGRESS --> INDIVIDUAL_COMPLETE{Complete?}
+
+    BATCH_COMPLETE -->|No| BATCH_PROGRESS
+    BATCH_COMPLETE -->|Yes| REVIEW_RESULTS[📋 Review Results]
+
+    INDIVIDUAL_COMPLETE -->|No| INDIVIDUAL_PROGRESS
+    INDIVIDUAL_COMPLETE -->|Yes| REVIEW_RESULTS
+
+    REVIEW_RESULTS --> ERRORS{Any Errors?}
+    ERRORS -->|Yes| RETRY_FAILED[🔄 Retry Failed]
+    ERRORS -->|No| KNOWLEDGE_READY[✅ Knowledge Ready]
+
+    RETRY_FAILED --> REVIEW_RESULTS
+    KNOWLEDGE_READY --> TEST_KNOWLEDGE[🧪 Test Knowledge]
+    TEST_KNOWLEDGE --> COMPLETE([✅ Ingestion Complete])
+
+    classDef start fill:#e8f5e8
+    classDef process fill:#e3f2fd
+    classDef decision fill:#fff3e0
+    classDef config fill:#f3e5f5
+    classDef complete fill:#e1f5fe
+    classDef error fill:#ffebee
+
+    class START,COMPLETE start
+    class LOCAL_FILES,LOCAL_FOLDERS,VALIDATE_FILES,VALIDATE_FOLDER,ENABLE_MONITOR,CLONE_REPO,GDRIVE_FOLDER,SINGLE_URL,START_CRAWL,SITEMAP_URL,PROCESS_INDIVIDUAL,START_BATCH,BATCH_PROGRESS,INDIVIDUAL_PROGRESS,REVIEW_RESULTS,KNOWLEDGE_READY,TEST_KNOWLEDGE process
+    class SOURCE_TYPE,MONITOR_OPTION,GITHUB_AUTH,GDRIVE_AUTH,WEB_MODE,BATCH_OPTION,MORE_SOURCES,BATCH_COMPLETE,INDIVIDUAL_COMPLETE,ERRORS decision
+    class GITHUB_REPO,GDRIVE_SETUP,WEB_CONFIG,CRAWL_CONFIG,MAX_PAGES,DOMAIN_RESTRICT,BATCH_QUEUE config
+    class RETRY_FAILED error
+```
+
 ### **Adding Local Files and Folders**
 1. **Click "Add Files"**: Select individual files or documents
 2. **Click "Add Folder"**: Select entire directories for processing
@@ -112,7 +260,122 @@ Always ask clarifying questions when requirements are unclear.
 ## 🏢 **Workspace Management**
 
 ### **Understanding Workspaces**
-Workspaces help organize your configurations by project, team, or purpose:
+Workspaces provide powerful organization capabilities for managing multiple AI assistants across different contexts, teams, and projects:
+
+```mermaid
+graph TB
+    subgraph "Workspace Types"
+        PERSONAL[👤 Personal Workspace]
+        TEAM[👥 Team Workspace]
+        PROJECT[📋 Project Workspace]
+        TEMPLATE[📄 Template Workspace]
+    end
+
+    subgraph "Personal Workspace"
+        P_CONFIG1[Research Assistant]
+        P_CONFIG2[Code Helper]
+        P_CONFIG3[Writing Assistant]
+        P_KNOWLEDGE1[(Personal Docs)]
+        P_KNOWLEDGE2[(Code Projects)]
+    end
+
+    subgraph "Team Workspace"
+        T_CONFIG1[Team Standards Bot]
+        T_CONFIG2[Code Review Assistant]
+        T_CONFIG3[Documentation Helper]
+        T_KNOWLEDGE1[(Team Guidelines)]
+        T_KNOWLEDGE2[(Shared Codebase)]
+        T_KNOWLEDGE3[(Meeting Notes)]
+    end
+
+    subgraph "Project Workspace"
+        PR_CONFIG1[Project Analyst]
+        PR_CONFIG2[Technical Writer]
+        PR_CONFIG3[QA Assistant]
+        PR_KNOWLEDGE1[(Project Specs)]
+        PR_KNOWLEDGE2[(Requirements)]
+        PR_KNOWLEDGE3[(Test Cases)]
+    end
+
+    subgraph "Template Workspace"
+        TEMP1[Research Template]
+        TEMP2[Code Template]
+        TEMP3[Business Template]
+        TEMP4[Writing Template]
+        TEMP5[Learning Template]
+        TEMP6[Creative Template]
+    end
+
+    subgraph "Workspace Management"
+        WM[Workspace Manager]
+        SWITCH[Workspace Switcher]
+        IMPORT[Import/Export]
+        BACKUP[Backup System]
+        ANALYTICS[Usage Analytics]
+    end
+
+    %% Workspace connections
+    PERSONAL --> P_CONFIG1
+    PERSONAL --> P_CONFIG2
+    PERSONAL --> P_CONFIG3
+    P_CONFIG1 --> P_KNOWLEDGE1
+    P_CONFIG2 --> P_KNOWLEDGE2
+    P_CONFIG3 --> P_KNOWLEDGE1
+
+    TEAM --> T_CONFIG1
+    TEAM --> T_CONFIG2
+    TEAM --> T_CONFIG3
+    T_CONFIG1 --> T_KNOWLEDGE1
+    T_CONFIG2 --> T_KNOWLEDGE2
+    T_CONFIG3 --> T_KNOWLEDGE3
+
+    PROJECT --> PR_CONFIG1
+    PROJECT --> PR_CONFIG2
+    PROJECT --> PR_CONFIG3
+    PR_CONFIG1 --> PR_KNOWLEDGE1
+    PR_CONFIG2 --> PR_KNOWLEDGE2
+    PR_CONFIG3 --> PR_KNOWLEDGE3
+
+    TEMPLATE --> TEMP1
+    TEMPLATE --> TEMP2
+    TEMPLATE --> TEMP3
+    TEMPLATE --> TEMP4
+    TEMPLATE --> TEMP5
+    TEMPLATE --> TEMP6
+
+    %% Management connections
+    WM --> PERSONAL
+    WM --> TEAM
+    WM --> PROJECT
+    WM --> TEMPLATE
+
+    SWITCH --> WM
+    IMPORT --> WM
+    BACKUP --> WM
+    ANALYTICS --> WM
+
+    %% Template application
+    TEMP1 -.-> P_CONFIG1
+    TEMP2 -.-> P_CONFIG2
+    TEMP3 -.-> T_CONFIG1
+    TEMP4 -.-> PR_CONFIG2
+
+    classDef workspace fill:#e3f2fd
+    classDef personal fill:#e8f5e8
+    classDef team fill:#fff3e0
+    classDef project fill:#f3e5f5
+    classDef template fill:#fce4ec
+    classDef management fill:#f1f8e9
+
+    class PERSONAL,TEAM,PROJECT,TEMPLATE workspace
+    class P_CONFIG1,P_CONFIG2,P_CONFIG3,P_KNOWLEDGE1,P_KNOWLEDGE2 personal
+    class T_CONFIG1,T_CONFIG2,T_CONFIG3,T_KNOWLEDGE1,T_KNOWLEDGE2,T_KNOWLEDGE3 team
+    class PR_CONFIG1,PR_CONFIG2,PR_CONFIG3,PR_KNOWLEDGE1,PR_KNOWLEDGE2,PR_KNOWLEDGE3 project
+    class TEMP1,TEMP2,TEMP3,TEMP4,TEMP5,TEMP6 template
+    class WM,SWITCH,IMPORT,BACKUP,ANALYTICS management
+```
+
+**Workspace Types:**
 - **Personal**: Individual configurations and projects
 - **Team**: Shared configurations for team collaboration
 - **Project**: Project-specific AI assistants and knowledge
