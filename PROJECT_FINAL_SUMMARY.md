@@ -19,6 +19,122 @@ Transform a basic AI chat interface into a sophisticated, enterprise-ready platf
 
 ## 🏗️ **Complete Architecture Overview**
 
+### **Visual Architecture Guide**
+
+The Custom Gemini Agent GUI features a sophisticated multi-layered architecture that evolved through 5 major epics, each contributing essential capabilities:
+
+```mermaid
+graph TB
+    subgraph "Epic 1: Core Infrastructure"
+        UI[PyQt6 UI Framework]
+        API[Google Gemini API]
+        CONFIG[Configuration Management]
+        LOG[Logging System]
+    end
+
+    subgraph "Epic 2: Enhanced UI/UX"
+        MAIN[Main Window]
+        INST[Instructions Widget]
+        KNOW[Knowledge Widget]
+        CHAT[Chat Widget]
+        SET[Settings Widget]
+    end
+
+    subgraph "Epic 3: Persistent RAG"
+        CHROMA[ChromaDB Vector Store]
+        EMBED[Text Embedding]
+        CHUNK[Document Chunking]
+        SEARCH[Semantic Search]
+        MONITOR[File Monitoring]
+    end
+
+    subgraph "Epic 4: Advanced Ingestion"
+        LOCAL[Local Files/Folders]
+        GITHUB[GitHub Integration]
+        GDRIVE[Google Drive API]
+        WEB[Web Scraping]
+        BATCH[Batch Processing]
+    end
+
+    subgraph "Epic 5: Configuration Management"
+        WORKSPACE[Multi-Workspace]
+        TEMPLATE[Template System]
+        IMPORT[Import/Export]
+        SESSION[Session Management]
+        MANAGER[Config Manager UI]
+    end
+
+    subgraph "Core Services Layer"
+        CONTROLLER[Main Controller]
+        RAGSERV[RAG Service]
+        APISERVICE[API Service]
+        CONFIGSERV[Config Service]
+        WORKSERV[Workspace Service]
+        TEMPSERV[Template Service]
+        SESSSERV[Session Service]
+        IMPEXPSERV[Import/Export Service]
+    end
+
+    %% Epic Connections
+    UI --> MAIN
+    API --> APISERVICE
+    CONFIG --> CONFIGSERV
+    MAIN --> INST
+    MAIN --> KNOW
+    MAIN --> CHAT
+    MAIN --> SET
+    RAGSERV --> CHROMA
+    RAGSERV --> EMBED
+    RAGSERV --> CHUNK
+    RAGSERV --> SEARCH
+    MONITOR --> RAGSERV
+    LOCAL --> RAGSERV
+    GITHUB --> RAGSERV
+    GDRIVE --> RAGSERV
+    WEB --> RAGSERV
+    BATCH --> RAGSERV
+    WORKSPACE --> WORKSERV
+    TEMPLATE --> TEMPSERV
+    IMPORT --> IMPEXPSERV
+    SESSION --> SESSSERV
+    MANAGER --> WORKSERV
+
+    %% Service Layer Connections
+    CONTROLLER --> RAGSERV
+    CONTROLLER --> APISERVICE
+    CONTROLLER --> CONFIGSERV
+    CONTROLLER --> WORKSERV
+    CONTROLLER --> TEMPSERV
+    CONTROLLER --> SESSSERV
+    CONTROLLER --> IMPEXPSERV
+
+    %% UI to Controller
+    MAIN --> CONTROLLER
+    INST --> CONTROLLER
+    KNOW --> CONTROLLER
+    CHAT --> CONTROLLER
+    SET --> CONTROLLER
+    MANAGER --> CONTROLLER
+
+    %% Data Flow
+    CHROMA --> APISERVICE
+    APISERVICE --> CHAT
+
+    classDef epic1 fill:#e1f5fe
+    classDef epic2 fill:#f3e5f5
+    classDef epic3 fill:#e8f5e8
+    classDef epic4 fill:#fff3e0
+    classDef epic5 fill:#fce4ec
+    classDef services fill:#f5f5f5
+
+    class UI,API,CONFIG,LOG epic1
+    class MAIN,INST,KNOW,CHAT,SET epic2
+    class CHROMA,EMBED,CHUNK,SEARCH,MONITOR epic3
+    class LOCAL,GITHUB,GDRIVE,WEB,BATCH epic4
+    class WORKSPACE,TEMPLATE,IMPORT,SESSION,MANAGER epic5
+    class CONTROLLER,RAGSERV,APISERVICE,CONFIGSERV,WORKSERV,TEMPSERV,SESSSERV,IMPEXPSERV services
+```
+
 ### **Core Application Structure**
 ```
 Custom Gemini Agent GUI/
