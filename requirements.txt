@@ -1,0 +1,61 @@
+# Core GUI Framework
+PyQt6==6.6.1
+
+# AI and ML Libraries
+sentence-transformers==2.2.2
+google-generativeai==0.8.3
+
+# Vector Database
+chromadb==0.4.22
+
+# Document Processing and RAG
+langchain==0.1.0
+langchain-community==0.0.10
+langchain-core==0.1.10
+
+# File System Monitoring
+watchdog==4.0.0
+
+# Git Integration
+GitPython==3.1.40
+
+# Google Drive API
+google-api-python-client==2.111.0
+google-auth-httplib2==0.2.0
+google-auth-oauthlib==1.2.0
+
+# Document Loaders
+PyPDF2==3.0.1
+python-docx==1.1.0
+openpyxl==3.1.2
+
+# Secure Storage
+keyring==24.3.0
+
+# HTTP Requests and Web Scraping
+requests==2.31.0
+beautifulsoup4==4.12.2
+trafilatura==1.6.4
+
+# Configuration Management
+pydantic==2.5.2
+pydantic-settings==2.1.0
+
+# Logging
+loguru==0.7.2
+
+# Testing
+pytest==7.4.3
+pytest-qt==4.2.0
+pytest-mock==3.12.0
+
+# Epic 5: Configuration & Session Management
+# (Uses existing dependencies: pydantic, pathlib, json, datetime, uuid)
+
+# Development Tools
+black==23.12.1
+flake8==6.1.0
+mypy==1.8.0
+
+# Packaging
+PyInstaller==6.3.0
