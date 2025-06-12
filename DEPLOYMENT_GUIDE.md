@@ -46,7 +46,17 @@ source venv/bin/activate
 
 We provide multiple requirements files for different installation scenarios:
 
-**Standard Installation (Recommended)**
+**Latest Versions (June 12, 2025) - Recommended**
+```bash
+pip install -r requirements-latest-2025.txt
+```
+
+**Windows-Specific Installation (Solves lxml issues)**
+```bash
+pip install -r requirements-windows-2025.txt
+```
+
+**Standard Installation**
 ```bash
 pip install -r requirements.txt
 ```
@@ -61,12 +71,13 @@ pip install -r requirements-flexible.txt
 pip install -r requirements-minimal.txt
 ```
 
-**Manual Installation (If requirements files fail)**
+**Manual Installation with Latest Versions**
 ```bash
-# Core dependencies only
-pip install PyQt6 google-generativeai chromadb sentence-transformers
-pip install PyPDF2 python-docx requests beautifulsoup4 pydantic loguru
-pip install watchdog GitPython keyring
+# Core dependencies with latest versions
+pip install PyQt6==6.9.1 google-generativeai==0.8.3 chromadb==1.0.12
+pip install sentence-transformers==4.1.0 PyPDF2==3.0.1 python-docx==1.1.2
+pip install requests==2.32.3 beautifulsoup4==4.12.3 pydantic==2.11.5
+pip install loguru==0.7.2 watchdog==5.0.3 GitPython==3.1.43 keyring==25.4.1
 ```
 
 **Verify Installation**
@@ -592,6 +603,25 @@ pip install onnxruntime
 # If Google API packages fail:
 pip install google-api-python-client google-auth google-auth-oauthlib
 ```
+
+#### **lxml Installation Issues (Common on Windows with Python 3.13)**
+```bash
+# Error: Cannot open include file: 'libxml/xmlversion.h'
+# Solution 1: Use Windows-compatible requirements (Recommended)
+pip install -r requirements-windows-2025.txt
+
+# Solution 2: Use alternative XML libraries
+pip install html5lib==1.1 defusedxml==0.7.1
+
+# Solution 3: Install pre-compiled wheel
+pip install lxml==5.4.0 --only-binary=lxml
+
+# Solution 4: For Apple Silicon Macs
+pip install lxml --no-deps
+pip install onnxruntime
+```
+
+**📋 For detailed lxml troubleshooting, see [LXML_INSTALLATION_GUIDE.md](LXML_INSTALLATION_GUIDE.md)**
 
 ### **Runtime Issues**
 
