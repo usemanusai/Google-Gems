@@ -1,5 +1,5 @@
-# Custom Gemini Agent GUI - Windows Compatible Requirements (June 12, 2025)
-# Optimized for Windows installation with Python 3.13 compatibility
+# Custom Gemini Agent GUI - Windows Core Requirements (June 12, 2025)
+# Minimal set for Windows with Python 3.13 - No compilation issues
 
 # Core GUI Framework
 PyQt6==6.9.1
@@ -37,8 +37,7 @@ requests==2.32.3
 beautifulsoup4==4.12.3
 trafilatura==1.12.2
 
-# XML Processing - Windows Compatible Alternative
-# Instead of lxml which has compilation issues on Windows
+# XML Processing - Windows Compatible (NO lxml)
 html5lib==1.1
 defusedxml==0.7.1
 
@@ -52,20 +51,7 @@ pydantic-settings==2.6.1
 # Logging
 loguru==0.7.2
 
-# Testing
-pytest==8.3.3
-pytest-qt==4.4.0
-pytest-mock==3.14.0
-
-# Development Tools
-black==24.10.0
-flake8==7.1.1
-mypy==1.13.0
-
-# Packaging
-PyInstaller==6.14.1
-
-# Windows-specific dependencies
+# Windows-specific dependencies (Python 3.13 compatible)
 pywin32==310
 pywin32-ctypes==0.2.3
 
@@ -78,7 +64,6 @@ six==1.16.0
 
 # Additional Windows compatibility
 colorama==0.4.6
-wincertstore==0.2.1
 
 # Alternative XML libraries for Windows
 xmltodict==0.13.0
