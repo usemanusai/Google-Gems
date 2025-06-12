@@ -58,10 +58,16 @@ cd Google-Gems
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Install dependencies
-pip install -r requirements.txt
+# Install dependencies (choose the best option for your system)
+
+# Latest versions (June 12, 2025) - Recommended
+pip install -r requirements-latest-2025.txt
+
+# Windows-specific (solves lxml issues)
+pip install -r requirements-windows-2025.txt
 
 # Alternative installation options
+# pip install -r requirements.txt           # Original versions
 # pip install -r requirements-flexible.txt  # For version conflicts
 # pip install -r requirements-minimal.txt   # For basic functionality
 

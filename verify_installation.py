@@ -44,6 +44,7 @@ def check_core_dependencies() -> List[Tuple[str, str, bool]]:
         ("Beautiful Soup", "bs4"),
         ("Pydantic", "pydantic"),
         ("Loguru", "loguru"),
+        ("Typing Extensions", "typing_extensions"),
     ]
     
     results = []
@@ -66,6 +67,8 @@ def check_optional_dependencies() -> List[Tuple[str, str, bool]]:
         ("Keyring", "keyring"),
         ("Trafilatura", "trafilatura"),
         ("OpenPyXL", "openpyxl"),
+        ("HTML5lib", "html5lib"),
+        ("DefusedXML", "defusedxml"),
     ]
     
     results = []
@@ -147,15 +150,17 @@ def provide_installation_suggestions(failed_packages: List[str]) -> None:
     print("-" * 40)
     
     suggestions = {
-        "PyQt6": "pip install PyQt6",
-        "Google Generative AI": "pip install google-generativeai",
-        "ChromaDB": "pip install chromadb",
-        "Sentence Transformers": "pip install sentence-transformers",
-        "PyPDF2": "pip install PyPDF2",
-        "Python-DOCX": "pip install python-docx",
-        "Watchdog": "pip install watchdog",
-        "GitPython": "pip install GitPython",
-        "Keyring": "pip install keyring",
+        "PyQt6": "pip install PyQt6==6.9.1",
+        "Google Generative AI": "pip install google-generativeai==0.8.3",
+        "ChromaDB": "pip install chromadb==1.0.12",
+        "Sentence Transformers": "pip install sentence-transformers==4.1.0",
+        "PyPDF2": "pip install PyPDF2==3.0.1",
+        "Python-DOCX": "pip install python-docx==1.1.2",
+        "Watchdog": "pip install watchdog==5.0.3",
+        "GitPython": "pip install GitPython==3.1.43",
+        "Keyring": "pip install keyring==25.4.1",
+        "HTML5lib": "pip install html5lib==1.1",
+        "DefusedXML": "pip install defusedxml==0.7.1",
     }
     
     for package in failed_packages:
@@ -163,9 +168,13 @@ def provide_installation_suggestions(failed_packages: List[str]) -> None:
             print(f"📦 {package}: {suggestions[package]}")
     
     print("\n🔧 Alternative installation methods:")
-    print("   Standard: pip install -r requirements.txt")
-    print("   Flexible: pip install -r requirements-flexible.txt")
-    print("   Minimal:  pip install -r requirements-minimal.txt")
+    print("   Latest 2025: pip install -r requirements-latest-2025.txt")
+    print("   Windows:     pip install -r requirements-windows-2025.txt")
+    print("   Standard:    pip install -r requirements.txt")
+    print("   Flexible:    pip install -r requirements-flexible.txt")
+    print("   Minimal:     pip install -r requirements-minimal.txt")
+    print("\n💡 For lxml installation issues on Windows:")
+    print("   See LXML_INSTALLATION_GUIDE.md for detailed solutions")
 
 def main():
     """Main verification function."""
